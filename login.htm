@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | Forge Desk</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: aliceblue;
+      color: #333;
+      text-align: center;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      color: white;
+      height: 80px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    .logo img {
+      border-radius: 50%;
+      object-fit: cover;
+      width: 80px;
+      height: 75px;
+      border: 2px solid #fff;
+    }
+    .title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+    nav a {
+      font-size: 0.9rem;
+      padding: 6px 14px;
+      border-radius: 6px;
+      background-color: #ffffff33;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    nav a:hover {
+      background-color: #1e3c72;
+      transform: translateY(-2px);
+    }
+    form {
+      background: white;
+      color: #333;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: 150px auto 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    body.dark-mode form {
+      background: #1f1f1f;
+      color: #f0f0f0;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #2a5298;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #1e3c72;
+    }
+    a {
+      color: #2a5298;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+      }
+      .title {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+      }
+      form {
+        margin: 130px auto 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="Logo.jpg" alt="Logo" />
+    </div>
+    <div class="title">FORGE DESK</div>
+    <nav>
+      <a href="#" id="themeToggle" title="Toggle Theme"><i class="fa-solid fa-moon" id="themeIcon"></i></a>
+      <a href="register.htm">Register</a>
+      <a href="login.htm">Login</a>
+    </nav>
+  </header>
+
+  <form id="loginForm">
+    <input type="text" id="username" name="username" placeholder="Username" required />
+    <input type="password" id="password" name="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+    <p style="margin-top: 10px;">Don't have an account? <a href="register.htm">Register</a></p>
+  </form>
+
+  <script>
+    // Theme Toggle Script
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+      } else {
+        document.body.classList.remove('dark-mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+      }
+    }
+
+    // Apply saved theme on load
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(currentTheme);
+
+    themeToggle.addEventListener('click', function(event) {
+      event.preventDefault(); // 🛑 Prevent page refresh
+      const isDark = document.body.classList.contains('dark-mode');
+      const newTheme = isDark ? 'light' : 'dark';
+      localStorage.setItem('theme', newTheme);
+      applyTheme(newTheme);
+    });
+
+    // Login Logic
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const validUser = users.find(user => user.username === username && user.password === password);
+      if (validUser) {
+        localStorage.setItem("currentUser", JSON.stringify(validUser));
+        alert("Login successful!");
+        window.location.href = "dashboard.htm";
+      } else {
+        alert("Invalid username or password!");
+      }
+    });
+  </script>
+
+</body>
+</html>

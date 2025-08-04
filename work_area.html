@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Work Area | Forge Desk</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: aliceblue;
+      color: #333;
+      text-align: center;
+      padding-top: 100px;
+    }
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0; left: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      color: white;
+      height: 80px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    .logo img {
+      border-radius: 50%;
+      object-fit: cover;
+      width: 80px; height: 75px;
+      border: 2px solid #fff;
+    }
+    .title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+    nav a {
+      font-size: 0.9rem;
+      padding: 6px 14px;
+      border-radius: 6px;
+      background-color: #ffffff33;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    nav a:hover {
+      background-color: #1e3c72;
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      text-align: left;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 8px;
+      height: 20px;
+      width: 100%;
+      margin: 10px 0;
+    }
+    .progress {
+      background: #4caf50;
+      height: 100%;
+      width: 0%;
+      border-radius: 8px;
+      text-align: center;
+      color: white;
+    }
+    .task-list li.done {
+      text-decoration: line-through;
+      color: green;
+      cursor: pointer;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    button {
+      padding: 6px 12px;
+      margin: 5px 0;
+      cursor: pointer;
+      background: #2a5298;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+      }
+      .title {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="Logo.jpg" alt="Logo" />
+    </div>
+    <div class="title">FORGE DESK</div>
+    <nav>
+      <a href="theme.htm"><i class="fa-solid fa-moon"></i></a>
+      <a href="register.htm">Register</a>
+      <a href="login.htm">Login</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1 id="projectTitle">Project Title</h1>
+    <h3 id="teamName">Team Name</h3>
+
+    <div class="section">
+      <h2>Progress</h2>
+      <div class="progress-bar">
+        <div id="progress" class="progress">0%</div>
+      </div>
+      <p id="statusMsg"></p>
+    </div>
+
+    <div class="section">
+      <h2>To-Do List</h2>
+      <ul id="taskList" class="task-list"></ul>
+      <input type="text" id="newTaskInput" placeholder="Add new task" />
+      <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <div class="section">
+      <h2>Notes</h2>
+      <textarea id="notes" rows="5" placeholder="Write project notes here..."></textarea>
+    </div>
+
+    <div class="section">
+      <h2>Team Members</h2>
+      <ul id="membersList"></ul>
+      <input type="text" id="newMemberInput" placeholder="Add team member (name or email)" />
+      <button onclick="addMember()">Add Member</button>
+      <button onclick="deleteMember()">Delete Last Member</button>
+      <button onclick="sendMail()">📧 Send Mail to All</button>
+    </div>
+
+    
+
+    <button onclick="goBack()">⬅️ Back to Dashboard</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectId = urlParams.get("project");
+
+    const projectData = JSON.parse(localStorage.getItem("selectedProject"));
+    const taskList = document.getElementById("taskList");
+    const membersList = document.getElementById("membersList");
+    const progressBar = document.getElementById("progress");
+    const statusMsg = document.getElementById("statusMsg");
+
+    let tasks = [];
+    let members = [];
+
+    if (projectData) {
+      document.getElementById("projectTitle").textContent = projectData.projectName;
+      document.getElementById("teamName").textContent = "Team: " + projectData.teamName;
+
+      if (Array.isArray(projectData.members)) {
+        members = [...projectData.members];
+        renderMembers();
+      }
+    }
+
+    function addTask() {
+      const taskInput = document.getElementById("newTaskInput");
+      const taskText = taskInput.value.trim();
+      if (taskText === "") return;
+      const task = { text: taskText, done: false };
+      tasks.push(task);
+      taskInput.value = "";
+      renderTasks();
+    }
+
+    function toggleTask(index) {
+      tasks[index].done = !tasks[index].done;
+      renderTasks();
+    }
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.textContent = task.text;
+        if (task.done) li.classList.add("done");
+        li.onclick = () => toggleTask(index);
+        taskList.appendChild(li);
+      });
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const doneCount = tasks.filter(t => t.done).length;
+      const total = tasks.length;
+      const percent = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+      progressBar.style.width = percent + "%";
+      progressBar.textContent = percent + "%";
+      statusMsg.textContent = percent === 100 ? "✅ All tasks completed!" : "";
+    }
+
+    function addMember() {
+      const input = document.getElementById("newMemberInput");
+      const member = input.value.trim();
+      if (member) {
+        members.push(member);
+        input.value = "";
+        renderMembers();
+      }
+    }
+
+    function deleteMember() {
+      members.pop();
+      renderMembers();
+    }
+
+    function renderMembers() {
+      membersList.innerHTML = "";
+      members.forEach(member => {
+        const li = document.createElement("li");
+        li.textContent = member;
+        membersList.appendChild(li);
+      });
+    }
+
+    function sendMail() {
+      const emails = members.filter(m => m.includes("@"));
+      if (emails.length === 0) {
+        alert("No valid email addresses found in team members.");
+        return;
+      }
+
+      const subject = encodeURIComponent("Project Progress Update");
+      const body = encodeURIComponent(`Hello Team,\n\nProject "${projectData?.projectName}" is currently in progress.\n\nTask Completion: ${progressBar.textContent}\n\nNotes:\n${document.getElementById("notes").value}\n\n- Forge Desk`);
+      window.location.href = `mailto:${emails.join(",")}?subject=${subject}&body=${body}`;
+    }
+
+    function goBack() {
+      window.location.href = "dashboard.htm";
+    }
+  </script>
+
+</body>
+</html>

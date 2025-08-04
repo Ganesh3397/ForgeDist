@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us | Forge Desk</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ---- SAME HEADER CSS FROM YOUR CODE ---- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    header {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      color: white;
+      height: 80px;
+    }
+
+    .logo img {
+      border-radius: 50%;
+      object-fit: cover;
+      width: 60px;
+      height: 60px;
+    }
+
+    .title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    nav a {
+      font-size: 0.9rem;
+      padding: 6px 14px;
+      border: none;
+      border-radius: 6px;
+      background-color: #ffffff33;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #1e3c72;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+      }
+
+      .title {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+      }
+    }
+
+    /* ---- NEW STYLES FOR ABOUT PAGE ---- */
+    body {
+      background-color: #f9f9f9;
+    }
+
+    .about-section {
+      padding: 50px 20px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .about-section h2 {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .team-card {
+      transition: transform 0.3s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-10px);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      background-color: #1e3c72;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SAME HEADER -->
+  <header>
+    <div class="logo">
+      <img src="Logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="title">FORGE DESK</div>
+
+    <nav>
+      <a href="theme.htm" title="Toggle Theme"><i class="fa-solid fa-moon"></i></a>
+      <a href="dashboard.htm" title="Dashboard"><i class="fa-solid fa-house"></i></a>
+      <a href="about.htm" title="About"><i class="fa-solid fa-circle-info"></i></a>
+      <a href="contact.htm" title="Contact"><i class="fa-solid fa-envelope"></i></a>
+    </nav>
+  </header>
+
+  <!-- ABOUT SECTION -->
+ <section class="about-section text-center container">
+  <h2>About Forge Desk</h2>
+  <p>
+    Forge Desk is a comprehensive project management tool designed to help teams
+    plan, organize, and execute projects efficiently. It offers an intuitive interface
+    where users can create tasks, assign responsibilities, and monitor progress—all in
+    one place.
+  </p>
+
+  <p>
+    Whether you’re managing small internal tasks or enterprise-level initiatives,
+    Forge Desk provides the structure needed to maintain productivity and deliver
+    projects successfully.
+  </p>
+</section>
+
+
+  <section class="container">
+    <h2 class="text-center mb-4"> Our Core Team</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4">
+        <div class="card team-card p-3 shadow">
+          <img src="Profile_photo.jpg" class="card-img-top rounded-circle w-50 mx-auto" alt="Team Member">
+          <div class="card-body text-center">
+            <h5 class="card-title">Pranav Khot</h5>
+            <p class="card-text">Full Stack Developer</p>
+            <a href="https://www.linkedin.com/in/pranav-khot-0b8a0225a/" class="btn btn-primary btn-sm"><i class="fa-brands fa-linkedin"></i> Connect</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card team-card p-3 shadow">
+          <img src="ganeshPh.png" class="card-img-top rounded-circle w-50 mx-auto" alt="Team Member">
+          <div class="card-body text-center">
+            <h5 class="card-title">Ganesh Sawant</h5>
+            <p class="card-text">Full Stack Developer</p>
+            <a href="https://www.linkedin.com/in/ganesh-sawant-4bb764318" class="btn btn-primary btn-sm"><i class="fa-brands fa-linkedin"></i> Connect</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card team-card p-3 shadow">
+          <img src="virajph.jpg" class="card-img-top rounded-circle w-50 mx-auto" alt="Team Member">
+          <div class="card-body text-center">
+            <h5 class="card-title">Viraj Thorat</h5>
+            <p class="card-text">Full Stack Developer</p>
+            <a href="#" class="btn btn-primary btn-sm"><i class="fa-brands fa-linkedin"></i> Connect</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Forge Desk | All Rights Reserved
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

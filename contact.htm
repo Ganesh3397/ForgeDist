@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Title</title>
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+</head>
+<style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background: linear-gradient(90deg, #1e3c72, #2a5298);
+  color: white;
+  height: 80px;
+}
+
+.logo img {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 60px;
+  height: 60px;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+nav {
+  display: flex;
+  gap: 15px;
+}
+
+nav a {
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ffffff33;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #1e3c72;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+  }
+
+  .title {
+    position: static;
+    transform: none;
+    margin-top: 10px;
+  }
+}
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+ 
+</style>
+<body>
+
+  <!-- Header Start -->
+  <header>
+    <div class="logo">
+      <img src="Logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="title">FORGE DESK</div>
+
+    <nav>
+       <a href="theme.htm" title="Toggle Theme"><i class="fa-solid fa-moon"></i></a>
+      <a href="dashboard.htm" title="Dashboard"><i class="fa-solid fa-house"></i></a>
+      <a href="about.htm" title="About"><i class="fa-solid fa-circle-info"></i></a>
+      <a href="contact.htm" title="Contact"><i class="fa-solid fa-envelope"></i></a>
+    </nav>
+  </header>
+  <!-- Header End -->
+
+ <main>
+  <!-- Page content here -->
+  <section style="padding: 40px; background-color: #f4f4f4; color: #333;">
+    <h2 style="text-align: center; margin-bottom: 30px;">Contact Us</h2>
+    <div style="max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div>
+        <p><i class="fa-solid fa-envelope"></i> Email: <a href="mailto:forgedesk@gmail.com">forgedesk@gmail.com</a></p>
+        <p><i class="fa-solid fa-phone"></i> Phone: +91 98765 43210</p>
+        <p><i class="fa-brands fa-linkedin"></i> LinkedIn: <a href="https://linkedin.com/company/forgedesk" target="_blank">linkedin.com/company/forgedesk</a></p>
+      </div>
+      <div>
+        <p><i class="fa-brands fa-instagram"></i> Instagram: <a href="https://instagram.com/forgedesk" target="_blank">@forgedesk</a></p>
+        <p><i class="fa-solid fa-location-dot"></i> Address: <br> 123 Alexa park<br> kolhapur, Maharashtra, India - 416013</p>
+      </div>
+    </div>
+  </section>
+</main>
+  <footer style="background-color: #1e3c72; color: white; text-align: center; padding: 20px 0; margin-top: 40px;">
+    <p>&copy; 2023 Forge Desk. All rights reserved.</p>
+  </footer>
+</body>
+</html>

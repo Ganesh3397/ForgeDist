@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Team | Forge Desk</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      padding: 30px;
+      color: #333;
+    }
+
+    /* --- HEADER --- */
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      color: white;
+      height: 80px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .logo img {
+      border-radius: 50%;
+      object-fit: cover;
+      width: 60px;
+      height: 60px;
+      border: 2px solid #fff;
+    }
+
+    .title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    nav a {
+      font-size: 0.9rem;
+      padding: 6px 14px;
+      border-radius: 6px;
+      background-color: #ffffff33;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #1e3c72;
+      transform: translateY(-2px);
+    }
+
+    /* --- MAIN FORM AREA --- */
+    h1 {
+      text-align: center;
+      color: #2a5298;
+      margin: 120px 0 30px; /* Push down for fixed header */
+    }
+
+    .form-box, .summary-box {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .checkbox-group label {
+      font-weight: normal;
+    }
+
+    .checkbox-group input {
+      margin-right: 5px;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      background-color: #2a5298;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1e3c72;
+    }
+
+    .summary-box {
+      margin-top: 40px;
+      display: none;
+    }
+
+    .summary-box h2 {
+      color: #1e3c72;
+      margin-bottom: 10px;
+    }
+
+    .countdown {
+      font-size: 1.3rem;
+      margin-top: 20px;
+      color: #e63946;
+      font-weight: bold;
+    }
+
+    /* --- RESPONSIVE HEADER --- */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+      }
+
+      .title {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="Logo.jpg" alt="Logo" />
+    </div>
+
+    <div class="title">FORGE DESK</div>
+
+    <nav>
+      <a href="theme.htm"><i class="fa-solid fa-moon"></i></a>
+       <a href="work_area.html" title="Work Area"><i class="fa-solid fa-briefcase"></i></a>
+    </nav>
+  </header>
+
+  <h1>Create Team & Assign Project</h1>
+
+  <div class="form-box">
+    <form id="teamForm">
+      <label for="teamName">Team Name:</label>
+      <input type="text" id="teamName" required>
+
+      <label for="projectName">Project Title:</label>
+      <input type="text" id="projectName" required>
+
+      <label for="deadline">Project Deadline (Date & Time):</label>
+      <input type="datetime-local" id="deadline" required>
+
+      <label>Assign Members:</label>
+      <div class="checkbox-group" id="membersList"></div>
+
+      <button type="submit">Save Project & Start Countdown</button>
+    </form>
+  </div>
+
+  <div class="summary-box" id="summary">
+    <h2>Project Summary</h2>
+    <p><strong>Team:</strong> <span id="s_team"></span></p>
+    <p><strong>Project:</strong> <span id="s_project"></span></p>
+    <p><strong>Deadline:</strong> <span id="s_deadline"></span></p>
+    <p><strong>Members:</strong> <span id="s_members"></span></p>
+    <div class="countdown">⏳ Time Left: <span id="timer"></span></div>
+  </div>
+
+  <script>
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const membersList = document.getElementById("membersList");
+
+    // Populate member list
+    if (users.length === 0) {
+      membersList.innerHTML = "<p>No registered users found.</p>";
+    } else {
+      users.forEach((user) => {
+        const label = document.createElement("label");
+        label.innerHTML = `
+          <input type="checkbox" value="${user.name}" name="members" />
+          ${user.name} (${user.username})
+        `;
+        membersList.appendChild(label);
+      });
+    }
+
+    const form = document.getElementById("teamForm");
+    const summary = document.getElementById("summary");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const teamName = document.getElementById("teamName").value;
+      const projectName = document.getElementById("projectName").value;
+      const deadline = new Date(document.getElementById("deadline").value);
+      const selected = [...document.querySelectorAll("input[name='members']:checked")];
+      const members = selected.map(m => m.value);
+
+      if (members.length === 0) {
+        alert("Please select at least one member.");
+        return;
+      }
+
+      // Show summary
+      document.getElementById("s_team").innerText = teamName;
+      document.getElementById("s_project").innerText = projectName;
+      document.getElementById("s_deadline").innerText = deadline.toLocaleString();
+      document.getElementById("s_members").innerText = members.join(", ");
+      summary.style.display = "block";
+
+      startCountdown(deadline);
+
+      // Save to localStorage
+      const newProject = {
+        teamName,
+        projectName,
+        deadline: deadline.toISOString(),
+        members
+      };
+
+      let allProjects = JSON.parse(localStorage.getItem("projects")) || [];
+      allProjects.push(newProject);
+      localStorage.setItem("projects", JSON.stringify(allProjects));
+    });
+
+    function startCountdown(deadline) {
+      const timerEl = document.getElementById("timer");
+
+      function updateTimer() {
+        const now = new Date();
+        const distance = deadline - now;
+
+        if (distance <= 0) {
+          timerEl.innerText = "⏰ Time's up!";
+          clearInterval(interval);
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((distance / (1000 * 60)) % 60);
+        const seconds = Math.floor((distance / 1000) % 60);
+
+        timerEl.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+
+      updateTimer();
+      const interval = setInterval(updateTimer, 1000);
+    }
+  </script>
+
+</body>
+</html>
